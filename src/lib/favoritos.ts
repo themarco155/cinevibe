@@ -45,8 +45,16 @@ function guardar(lista: PeliculaResumen[]) {
   window.dispatchEvent(new Event(EVENTO));
 }
 
+const sinSuscripcion = () => () => {};
+
 export function useFavoritos() {
   const favoritos = useSyncExternalStore(suscribir, leer, () => VACIO);
+  // false en el servidor y durante la hidratación; true ya en el navegador.
+  const listo = useSyncExternalStore(
+    sinSuscripcion,
+    () => true,
+    () => false,
+  );
 
   function esFavorito(id: number) {
     return favoritos.some((p) => p.id === id);
@@ -68,5 +76,5 @@ export function useFavoritos() {
     );
   }
 
-  return { favoritos, esFavorito, alternar };
+  return { favoritos, listo, esFavorito, alternar };
 }
