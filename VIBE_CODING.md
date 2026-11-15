@@ -19,7 +19,9 @@ La temática era libre. La IA propuso cuatro opciones que cumplían los requisit
 
 > Con un agente, un prompt bien detallado (el enunciado completo, con requisitos numerados) rinde más que muchos prompts cortos: la IA usó la lista de requisitos como lista de verificación.
 
-_Prompts posteriores (ajustes y despliegue): agregar aquí si se hacen más cambios._
+| 3 | Le pasé a la IA mi clave de TMDB para configurar el proyecto. | La IA creó `.env.local` (que no se sube a GitHub) y me indicó cómo probar en mi PC. Confirmé que todo se veía bien. |
+| 4 | _"Estoy importando el proyecto pero no veo la opción para agregar la variable"_ / _"ya hice deploy, ¿puedo igual agregarla?"_ | La IA me guió: Settings → Environment Variables en Vercel y luego Redeploy. |
+| 5 | Le pasé la URL del despliegue. | La IA revisó la URL, detectó que era privada y encontró la pública (ver desafíos). |
 
 ## 3. Iteraciones
 
@@ -34,6 +36,7 @@ Cada iteración terminó con `tsc`, `eslint` y `next build` antes de hacer el co
 | 5 | Route Handler `/api/buscar` y buscador con `useState` + `useEffect` | `feat: busqueda con Route Handler…` |
 | 6 | Página de favoritos con ordenamiento | `feat: pagina de favoritos…` |
 | 7 | Pruebas de todas las rutas, README y este documento | `docs: …` |
+| 8 | Prueba local con la clave real, subida a GitHub y despliegue en Vercel | `docs: agrega URL de produccion…` |
 
 ## 4. Decisiones técnicas
 
@@ -58,12 +61,20 @@ Cada iteración terminó con `tsc`, `eslint` y `next build` antes de hacer el co
 | **Google Fonts no se pudo descargar en el entorno de trabajo** y rompía la compilación. | Se cambió a fuentes del sistema. |
 | **El entorno de la IA no tenía acceso a TMDB.** | Se agregó la variable opcional `TMDB_BASE_URL` y se probó con un servidor de prueba local que imita las respuestas de TMDB (lista, búsqueda vacía, 404 y error 500). |
 
+### Desafíos del despliegue
+
+| Desafío | Solución |
+| --- | --- |
+| **Desplegué en Vercel sin la variable `TMDB_API_KEY`.** No vi la sección al importar (viene plegada). | Se agregó después en Settings → Environment Variables y se hizo **Redeploy**, porque las variables solo se aplican en un despliegue nuevo. |
+| **La primera URL que copié no era pública.** La dirección `…-git-main-….vercel.app` es la de la rama y pide iniciar sesión en Vercel. | La IA la abrió, vio que redirigía al login y comprobó que la URL pública de producción es <https://marcovibecine.vercel.app/>. |
+
 ## 6. Validación del código generado
 
 - `npx tsc --noEmit` y `npm run lint`: sin errores.
 - `npm run build`: compila; `/` y `/pelicula/[id]` quedan como _Partial Prerender_, `/buscar` y `/favoritos` como estáticas y `/api/buscar` como dinámica.
 - Pruebas con la app compilada: las 4 rutas responden; parámetros inválidos (`?pagina=-4`, `/pelicula/abc`) no rompen la app; una película inexistente muestra la página 404; un fallo de TMDB muestra la pantalla de error; `/api/buscar` responde 400 a búsquedas muy cortas y 502 si TMDB falla.
-- **Pendiente de revisar por mí:** la apariencia en el navegador (móvil y escritorio) con la clave real de TMDB.
+- Prueba manual en mi PC con la clave real de TMDB: las páginas, los pósters y la búsqueda funcionan.
+- En producción (<https://marcovibecine.vercel.app/>): el inicio carga las películas reales de TMDB.
 
 ## 7. Limitación conocida
 

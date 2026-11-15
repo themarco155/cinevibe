@@ -2,7 +2,8 @@
 
 Aplicación web para explorar películas: cartelera, búsqueda por título, detalle de cada película y lista de favoritos. Hecha con **Next.js 16 (App Router) + TypeScript + Tailwind CSS** usando la metodología de **Vibe Coding** (IA como copiloto).
 
-- **Demo en producción:** _pendiente — agregar aquí la URL de Vercel_
+- **Demo en producción:** <https://marcovibecine.vercel.app/>
+- **Repositorio:** <https://github.com/themarco155/cinevibe>
 - **Proceso de Vibe Coding:** [VIBE_CODING.md](./VIBE_CODING.md)
 
 ## Funcionalidades
