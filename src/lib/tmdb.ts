@@ -1,21 +1,9 @@
 // Cliente de TMDB. Solo se ejecuta en el servidor: la clave nunca llega al navegador.
 import { cacheLife } from "next/cache";
 import type { PeliculaDetalle, RespuestaLista } from "@/types/tmdb";
+import type { Lista } from "@/lib/utilidades";
 
 const BASE_URL = process.env.TMDB_BASE_URL ?? "https://api.themoviedb.org/3";
-
-export const LISTAS = {
-  popular: "Populares",
-  top_rated: "Mejor valoradas",
-  upcoming: "Próximamente",
-  now_playing: "En cartelera",
-} as const;
-
-export type Lista = keyof typeof LISTAS;
-
-export function esLista(valor: unknown): valor is Lista {
-  return typeof valor === "string" && valor in LISTAS;
-}
 
 export class TmdbError extends Error {
   constructor(
@@ -89,10 +77,4 @@ export async function obtenerPelicula(id: number) {
     if (error instanceof TmdbError && error.status === 404) return null;
     throw error;
   }
-}
-
-type Tamano = "w185" | "w342" | "w500" | "w1280";
-
-export function urlImagen(ruta: string | null, tamano: Tamano = "w342") {
-  return ruta ? `https://image.tmdb.org/t/p/${tamano}${ruta}` : null;
 }
